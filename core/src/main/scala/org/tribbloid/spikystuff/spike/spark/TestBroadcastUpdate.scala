@@ -9,9 +9,14 @@ object WorkerContainer {
   @volatile var last: Int = -1
 }
 
-case class AutoInsert(value: Int) extends Serializable{
+case class AutoInsert(var value: Int) extends Serializable{
 
   WorkerContainer.last = value
+
+  private def readObject(in: java.io.ObjectInputStream): Unit = {
+    this.value = in.readInt()
+    WorkerContainer.last = this.value
+  }
 }
 
 object TestBroadcastUpdate {
