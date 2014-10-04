@@ -44,7 +44,7 @@ fi
 EXAMPLE_MASTER=${MASTER:-"local-cluster[4,2,1000]"}
 
 if [[ ! $EXAMPLE_CLASS == org.tribbloid.spikystuff.example* ]]; then
-  EXAMPLE_CLASS="org.tribbloid.spikystuff.spike.$EXAMPLE_CLASS"
+  EXAMPLE_CLASS="org.tribbloid.spikystuff.spike.spark.$EXAMPLE_CLASS"
 fi
 
 AWS_ACCESS_KEY_ID=$AWSAccessKeyId \

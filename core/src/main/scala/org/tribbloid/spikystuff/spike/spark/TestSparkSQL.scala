@@ -1,8 +1,7 @@
-package org.tribbloid.spikystuff.spike
-
-import org.apache.spark.{SparkContext, SparkConf, sql}
+package org.tribbloid.spikystuff.spike.spark
 
 import org.apache.spark.sql.SQLContext
+import org.apache.spark.{SparkConf, SparkContext}
 
 /**
  * Created by peng on 12/06/14.

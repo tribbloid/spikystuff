@@ -1,4 +1,4 @@
-package org.tribbloid.spikystuff.spike
+package org.tribbloid.spikystuff.spike.spark
 
 import org.apache.spark.deploy.SparkSubmit
 

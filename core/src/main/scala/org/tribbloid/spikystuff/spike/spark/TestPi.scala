@@ -1,6 +1,6 @@
-package org.tribbloid.spikystuff.spike
+package org.tribbloid.spikystuff.spike.spark
 
-import org.apache.spark.{SparkContext, SparkConf}
+import org.apache.spark.{SparkConf, SparkContext}
 
 /**
  * Created by peng on 05/06/14.
