@@ -17,33 +17,36 @@ object TestNonBlockingIteration {
 
     val input = sc.parallelize(1 to 10)
     
-    val acc = sc.accumulator(0)(IntAccumulatorParam)
+    val acc = sc.accumulator(-1)(IntAccumulatorParam)
 
     import scala.concurrent.ExecutionContext.Implicits.global
+    import scala.concurrent.duration._
 
     val future = Future {
       for (i <- 1 to 10) {
         sc.broadcast(AutoInsert(i))
-        wait(1000)
+        Thread.sleep(1000)
         println(i)
       }
     }
 
     future.onSuccess{case u => println("success")}
 
-//    val rdd1 = input.foreachPartition{
-//      values => {
-//        for (i<- 1 to 100000000) {
-//          acc += WorkerContainer.last
-//        }
-//      }
-//    }
+    val rdd1 = input.foreachPartition{
+      values => {
+        for (i<- 1 to 100) {
+          acc += WorkerContainer.last
+          println("feeding: " + WorkerContainer.last)
+          Thread.sleep(100)
+        }
+      }
+    }
 
-//    println(acc.value)
+    Await.result(future, 100 seconds)
+    println(acc.value)
 
-    //    println("Pi is roughly " + 4.0 * count / n)
     sc.stop()
-//    println("finished")
+    println("finished")
   }
 
 }
