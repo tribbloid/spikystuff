@@ -7,21 +7,20 @@ import scala.collection.mutable.ArrayBuffer
 /**
  * Created by peng on 10/1/14.
  */
-object ExecutorContainer {
+object WorkerContainer {
   @volatile var last: Int = -1
 }
 
 case class AutoInsert(value: Int) extends Serializable{
 
-  ExecutorContainer.last = value
+  WorkerContainer.last = value
 }
 
 object TestBroadcastUpdate {
 
   def main(args: Array[String]) {
-    def random: Double = java.lang.Math.random()
 
-    val conf = new SparkConf().setAppName("Spark Pi")
+    val conf = new SparkConf().setAppName("TestBroadcastUpdate")
     //    conf.setMaster("local-cluster[2,4,1000]") //no can do! spark cannot find jars
     conf.setMaster("local[8,3]")
     conf.setSparkHome(System.getenv("SPARK_HOME"))
@@ -31,13 +30,13 @@ object TestBroadcastUpdate {
 
     sc.broadcast(AutoInsert(2))
 
-    val rdd1 = input.map(_ * ExecutorContainer.last).persist()
+    val rdd1 = input.map(_ * WorkerContainer.last).persist()
 
     rdd1.count()
 
     sc.broadcast(AutoInsert(3))
 
-    val rdd2 = rdd1.map(_ * ExecutorContainer.last)
+    val rdd2 = rdd1.map(_ * WorkerContainer.last)
 
     rdd2.collect().foreach(println)
 
