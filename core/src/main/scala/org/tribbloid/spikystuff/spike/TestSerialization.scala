@@ -1,4 +1,4 @@
-package org.tribbloid.spookystuff.spike
+package org.tribbloid.spikystuff.spike
 
 import java.io.{ObjectOutputStream, ByteArrayOutputStream, OutputStream}
 

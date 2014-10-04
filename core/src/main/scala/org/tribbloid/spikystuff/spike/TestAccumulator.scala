@@ -1,5 +1,4 @@
-package org.tribbloid.spookystuff.spike
-
+package org.tribbloid.spikystuff.spike
 
 import org.apache.spark.{SparkContext, SparkConf}
 import SparkContext._
