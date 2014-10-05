@@ -1,5 +1,7 @@
 package org.tribbloid.spikystuff.spike.spark
 
+import java.io.ObjectInputStream
+
 import org.apache.spark.{SparkConf, SparkContext}
 
 /**
@@ -13,9 +15,8 @@ class AutoInsert(var value: Int) extends Serializable{
 
   WorkerContainer.last = value
 
-  @throws[java.io.IOException]
-  private def readObject(in: java.io.ObjectInputStream): Unit = {
-    this.value = in.readInt()
+  private def readObject(in: ObjectInputStream): Unit = {
+    in.defaultReadObject()
     WorkerContainer.last = this.value
   }
 }
@@ -34,13 +35,13 @@ object TestBroadcastUpdate {
 
     sc.broadcast(new AutoInsert(2))
 
-    val rdd1 = input.map(_ * WorkerContainer.last).persist()
+    val rdd1 = input.map(_ + WorkerContainer.last).persist()
 
     rdd1.count()
 
     sc.broadcast(new AutoInsert(3))
 
-    val rdd2 = rdd1.map(_ * WorkerContainer.last)
+    val rdd2 = rdd1.map(_ + WorkerContainer.last)
 
     rdd2.collect().foreach(println)
 
