@@ -9,10 +9,11 @@ object WorkerContainer {
   @volatile var last: Int = -1
 }
 
-case class AutoInsert(var value: Int) extends Serializable{
+class AutoInsert(var value: Int) extends Serializable{
 
   WorkerContainer.last = value
 
+  @throws[java.io.IOException]
   private def readObject(in: java.io.ObjectInputStream): Unit = {
     this.value = in.readInt()
     WorkerContainer.last = this.value
@@ -31,13 +32,13 @@ object TestBroadcastUpdate {
 
     val input = sc.parallelize(1 to 10, 8)
 
-    sc.broadcast(AutoInsert(2))
+    sc.broadcast(new AutoInsert(2))
 
     val rdd1 = input.map(_ * WorkerContainer.last).persist()
 
     rdd1.count()
 
-    sc.broadcast(AutoInsert(3))
+    sc.broadcast(new AutoInsert(3))
 
     val rdd2 = rdd1.map(_ * WorkerContainer.last)
 
@@ -59,13 +60,13 @@ object TestBroadcastUpdateSubmit {
 
     val input = sc.parallelize(1 to 10, 8)
 
-    sc.broadcast(AutoInsert(2))
+    sc.broadcast(new AutoInsert(2))
 
     val rdd1 = input.map(_ * WorkerContainer.last).persist()
 
     rdd1.count()
 
-    sc.broadcast(AutoInsert(3))
+    sc.broadcast(new AutoInsert(3))
 
     val rdd2 = rdd1.map(_ * WorkerContainer.last)
 

@@ -24,7 +24,7 @@ object TestNonBlockingIteration {
 
     val future = Future {
       for (i <- 1 to 10) {
-        sc.broadcast(AutoInsert(i))
+        sc.broadcast(new AutoInsert(i))
         Thread.sleep(1000)
         println(i)
       }
@@ -68,7 +68,7 @@ object TestNonBlockingIterationSubmit {
 
     val future = Future {
       for (i <- 1 to 10) {
-        sc.broadcast(AutoInsert(i))
+        sc.broadcast(new AutoInsert(i))
         Thread.sleep(1000)
         println(i)
       }
