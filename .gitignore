@@ -45,3 +45,6 @@ foo
 **/inventories2/
 **/inventories3/
 **/inventories4/
+
+**.err
+**/Data
