@@ -26,9 +26,11 @@ object TestBroadcastUpdate {
   def main(args: Array[String]) {
 
     val conf = new SparkConf().setAppName("TestBroadcastUpdate")
-    //    conf.setMaster("local-cluster[2,4,1000]") //no can do! spark cannot find jars
-    conf.setMaster("local[8,3]")
-    conf.setSparkHome(System.getenv("SPARK_HOME"))
+      .setMaster("local[8,3]")
+//      .setMaster("local-cluster[2, 1, 1024]") //no can do! spark cannot find jars
+//      .set("spark.akka.frameSize", "1") // set to 1MB to detect direct serialization of data
+
+//    conf.setSparkHome(System.getenv("SPARK_HOME"))
     val sc = new SparkContext(conf)
 
     val input = sc.parallelize(1 to 10, 8)
@@ -63,13 +65,13 @@ object TestBroadcastUpdateSubmit {
 
     sc.broadcast(new AutoInsert(2))
 
-    val rdd1 = input.map(_ * WorkerContainer.last).persist()
+    val rdd1 = input.map(_ + WorkerContainer.last).persist()
 
     rdd1.count()
 
     sc.broadcast(new AutoInsert(3))
 
-    val rdd2 = rdd1.map(_ * WorkerContainer.last)
+    val rdd2 = rdd1.map(_ + WorkerContainer.last)
 
     rdd2.collect().foreach(println)
 
